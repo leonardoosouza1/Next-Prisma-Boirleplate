@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  traefik:
+    image: "traefik:v2.4"
+    container_name: "traefik"
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.http.address=:80"
+      - "--global.sendAnonymousUsage=false"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  db:
+    depends_on:
+      - traefik
+    container_name: "${DB_URL}"
+    image: postgres:alpine
+    volumes:
+      - "./.pg-data:/var/lib/postgresql/data:rw"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      POSTGRES_DB: "${DB_DATABASE}"
+    labels:
+      traefik.enable: true
+      traefik.http.routers.pg.rule: Host(`${DB_URL}`)
+      traefik.http.routers.pg.entrypoints: http
+
+  app:
+    build:
+      context: ./
+    command: sh -c "yarn install && yarn dev"
+    container_name: "${APP_URL}"
+    volumes:
+      - "./:/usr/app"
+    ports:
+      - "${HTTP_PORT}"
+    environment:
+      PORT: "${HTTP_PORT}"
+      APP_URL: "http://${APP_URL}"
+    labels:
+      traefik.enable: true
+      traefik.http.routers.app.rule: Host(`${APP_URL}`)
+      traefik.http.routers.app.entrypoints: http
