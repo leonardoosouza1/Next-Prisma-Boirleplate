@@ -13,3 +13,6 @@
 
 ### Open bash
 `docker exec -t local.development.com bash`
+
+### Create tables
+`npx prisma db push`
