@@ -12,4 +12,4 @@
 `docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)`
 
 ### Open bash
-docker exec -it local.develpoment.com bash
+`docker exec -t local.development.com bash`
