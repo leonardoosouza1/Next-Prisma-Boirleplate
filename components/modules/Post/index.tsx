@@ -30,4 +30,4 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
   );
 };
 
-export default Post;
+export { Post };
