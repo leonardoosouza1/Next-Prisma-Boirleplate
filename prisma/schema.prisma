@@ -4,7 +4,8 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
 }
 
 model Session {
@@ -12,23 +13,22 @@ model Session {
   sessionToken String   @unique @map("session_token")
   userId       String   @map("user_id")
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  password      String?
-  document      String?
-  phone         String?
-  email         String?   @unique
+  id            String    @id @unique @default(uuid())
+  name          String
+  password      String
+  phone         String
+  email         String    @unique
   emailVerified DateTime? @map("email_verified")
   image         String?
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-  sessions      Session[]
+  // sessions      Session[]
 
   @@map(name: "users")
 }
