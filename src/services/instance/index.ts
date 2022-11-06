@@ -6,7 +6,10 @@ import { refreshTokenRequest } from '../auth'
 const { token } = parseCookies()
 
 const instance = axios.create({
-    baseURL: 'local.development.com/api',
+    baseURL: 'http://local.development.com/api',
+    headers: {
+        apllication: 'form-data',
+    }
 })
 
 if (token) {

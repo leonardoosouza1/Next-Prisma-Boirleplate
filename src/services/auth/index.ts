@@ -14,10 +14,12 @@ type singUpRequestData = {
 }
 
 export const singInRequest = async ({ email, password }: singInRequestData) => {
-    // const res = await instance.post('/auth', {
-    //     email,
-    //     password,
-    // })
+    console.log('abc')
+    const res = await instance.post('/auth/sing-in', {
+        email,
+        password,
+    })
+    console.log('res', res);
 
     return {
         token: uuid(),
@@ -30,42 +32,46 @@ export const singInRequest = async ({ email, password }: singInRequestData) => {
     }
 }
 
-export const singUpRequest = async ({ email, password, name, phone }: singUpRequestData) => {
-    // const res = await instance.post('/auth', {
-    //     email,
-    //     password,
-    // })
+type singUpResponse = {
+    token: string
+    refreshToken: string
+}
 
-    return {
-        token: uuid(),
-        refreshToken: uuid(),
-        user: {
-            name: 'John Doe',
-            email: 'abc@gmail.com',
-            phone: '123456789'
-        }
+export const singUpRequest = async ({ email, password, name, phone }: singUpRequestData) => {
+    try {
+        return await instance.post('/auth/sing-up', {
+            email,
+            password,
+            name,
+            phone
+        }) as singUpResponse
+    } catch (e) {
+        console.log(e)
+        console.error(e)
+        return null
     }
 }
 
 export const recoverUserRequest = async ({ token }: { token: string }) => {
-    // const res = await instance.get('/auth')
-
-    return {
-        user: {
-            name: 'John Doe',
-            email: 'aagg@gmail.com',
-            phone: '123456789'
-        }
+    try {
+        return await instance.get('/auth', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    } catch (e) {
+        console.error(e)
+        return e
     }
 }
 
 export const refreshTokenRequest = async ({ refreshToken }: { refreshToken: string }) => {
-    // const res = await instance.post('/auth/refresh', {
-    //     refreshToken,
-    // })
-
-    return {
-        token: uuid(),
-        refreshToken: uuid(),
+    try {
+        return await instance.post('/auth/refresh', {
+            refreshToken,
+        })
+    } catch (e) {
+        console.error(e)
+        return e
     }
 }

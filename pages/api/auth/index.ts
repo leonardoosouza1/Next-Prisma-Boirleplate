@@ -1,6 +1,6 @@
 import prisma from "../../../src/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next"
-import { bcrypt } from "bcryptjs"
+import * as bcrypt from "bcrypt"
 import { jwt } from "jsonwebtoken"
 
 const singIn = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -22,45 +22,6 @@ const singIn = async (req: NextApiRequest, res: NextApiResponse) => {
         if (!isValidPassword) {
             return res.status(400).json({ error: 'Invalid password' })
         }
-
-        const token = jwt.sign({ email }, process.env.JWT_SECRET, {
-            subject: userId,
-            expiresIn: '1d',
-        })
-
-        return res.status(200).json({ token })
-    } catch (error) {
-        return res.status(500).json({ error: 'Internal server error' })
-    }
-}
-
-const singUp = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { email, password, phone, document } = req.body;
-
-    try {
-        const user = await prisma.user.findUnique({
-            where: {
-                email,
-            },
-        })
-
-        if (user) {
-            return res.status(400).json({ error: 'User already exists' })
-        }
-
-        const hashedPassword = String((async () => {
-            const salt = bcrypt.genSaltSync(10)
-            return bcrypt.hashSync(password, salt)
-        })())
-
-        const { id: userId } = await prisma.user.create({
-            data: {
-                email,
-                password: hashedPassword,
-                phone,
-                document,
-            },
-        })
 
         const token = jwt.sign({ email }, process.env.JWT_SECRET, {
             subject: userId,
@@ -103,12 +64,14 @@ const handleAuth = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     const methods = {
-        'POST /sing-in': singIn,
+        // 'POST /sing-in': singIn,
         'POST /sing-up': singUp,
         'GET /': handleAuth,
     }
 
     const method = methods[`${req.method} ${req.url}`]
+    console.log('method', method);
+
 
     if (method) {
         return method(req, res)

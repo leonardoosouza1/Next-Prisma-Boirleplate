@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from 'react'
 import { setCookie, parseCookies } from 'nookies'
 
-import { singInRequest, recoverUserRequest, refreshTokenRequest } from '../../services/auth'
+import { singInRequest, singUpRequest, recoverUserRequest, refreshTokenRequest } from '../../services/auth'
 
 type TUser = {
     name?: string
@@ -14,11 +14,15 @@ type TUser = {
 type SignType = {
     email: string
     password: string
+    document: string
+    name: string
+    phone: string
 }
 
 type AuthContextType = TUser & {
     isAuthenticated: boolean,
     signIn: ({ email, password }: SignType) => void,
+    singUp: ({ email, password, name, phone }: SignType) => void,
     signOut: () => void,
     handleRefreshToken: ({ refreshToken }: { refreshToken: string }) => void,
 }
@@ -32,7 +36,7 @@ const initialState = {
 
 export const AuthProvider: React.FC = ({ children }) => {
     const [Authdata, setAuthData] = useState(initialState as TUser)
-    const isAuthenticated = !!Authdata.token as boolean
+    const isAuthenticated = !!Authdata?.token as boolean
 
     useEffect(() => {
         (async () => {
@@ -53,6 +57,24 @@ export const AuthProvider: React.FC = ({ children }) => {
             }
         })()
     }, [])
+
+    const singUp = async ({ email, password, name, phone }: SignType) => {
+
+        try {
+            const data = await singUpRequest({ email, password, name, phone })
+            setAuthData(data)
+            setCookie(undefined, 'token', data.token, {
+                maxAge: 60 * 60 * 1, // 1 hour
+            })
+            setCookie(undefined, 'refreshToken', data.refreshToken, {
+                maxAge: 60 * 60 * 24 * 30, // 30 days
+            })
+            console.log('data', data);
+        } catch (e) {
+            console.error(e)
+            console.log(e)
+        }
+    }
 
     const signIn = async ({ email, password }: SignType) => {
         try {
@@ -109,7 +131,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ ...Authdata, isAuthenticated, signIn, signOut, handleRefreshToken }}>
+        <AuthContext.Provider value={{ ...Authdata, isAuthenticated, signIn, singUp, signOut, handleRefreshToken }}>
             {children}
         </AuthContext.Provider>
     )
