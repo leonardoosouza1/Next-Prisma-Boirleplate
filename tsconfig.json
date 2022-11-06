@@ -6,9 +6,11 @@
       "dom.iterable",
       "esnext"
     ],
+    "outDir": "dist",
+    "strict": true,
+    "noImplicitAny": false,
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -26,5 +28,5 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ]
+  ],
 }

@@ -8,3 +8,4 @@ COPY package*.json ./
 COPY yarn.lock ./
 
 RUN npm install -g prisma
+run npx prisma generate
