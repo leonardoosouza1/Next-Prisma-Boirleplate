@@ -11,7 +11,7 @@ type TUser = {
     refreshToken: string
 }
 
-type SignType = {
+type SignUpType = {
     email: string
     password: string
     document: string
@@ -19,10 +19,15 @@ type SignType = {
     phone: string
 }
 
+type SignInType = {
+    email: string
+    password: string
+}
+
 type AuthContextType = TUser & {
     isAuthenticated: boolean,
-    signIn: ({ email, password }: SignType) => void,
-    singUp: ({ email, password, name, phone }: SignType) => void,
+    signIn: ({ email, password }: SignInType) => void,
+    signUp: ({ email, password, name, phone }: SignUpType) => void,
     signOut: () => void,
     handleRefreshToken: ({ refreshToken }: { refreshToken: string }) => void,
 }
@@ -37,6 +42,7 @@ const initialState = {
 export const AuthProvider: React.FC = ({ children }) => {
     const [Authdata, setAuthData] = useState(initialState as TUser)
     const isAuthenticated = !!Authdata?.token as boolean
+    console.log(Authdata);
 
     useEffect(() => {
         (async () => {
@@ -58,8 +64,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         })()
     }, [])
 
-    const singUp = async ({ email, password, name, phone }: SignType) => {
-
+    const signUp = async ({ email, password, name, phone }: SignUpType) => {
         try {
             const data = await singUpRequest({ email, password, name, phone })
             setAuthData(data)
@@ -76,12 +81,14 @@ export const AuthProvider: React.FC = ({ children }) => {
         }
     }
 
-    const signIn = async ({ email, password }: SignType) => {
+    const signIn = async ({ email, password }: SignInType) => {
         try {
             const { token, refreshToken, user } = await singInRequest({
                 email,
                 password
             })
+            console.log(token, refreshToken,);
+
             setAuthData({
                 ...user,
                 token,
@@ -131,7 +138,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ ...Authdata, isAuthenticated, signIn, singUp, signOut, handleRefreshToken }}>
+        <AuthContext.Provider value={{ ...Authdata, isAuthenticated, signIn, signUp, signOut, handleRefreshToken }}>
             {children}
         </AuthContext.Provider>
     )

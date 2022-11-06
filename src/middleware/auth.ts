@@ -1,8 +1,10 @@
-import prisma from "../../../src/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next"
+import prisma from "../lib/prisma"
 import * as jwt from "jsonwebtoken";
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+type MiddlewareType = (req: NextApiRequest, res: NextApiResponse, ctx?: any) => void
+
+const authMiddleware = (handler: MiddlewareType) => async (req: NextApiRequest, res: NextApiResponse) => {
     const { authorization } = req.headers;
 
     if (!authorization) {
@@ -14,7 +16,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET)
 
-        console.log('userId', userId);
         const user = await prisma.user.findUnique({
             where: {
                 id: userId,
@@ -25,8 +26,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             return res.status(401).json({ error: 'Unauthorized' })
         }
 
-        return res.status(200).json({ user })
+        return handler(req, res, { user })
     } catch {
         return res.status(401).json({ error: 'Unauthorized' })
     }
 }
+
+export default authMiddleware

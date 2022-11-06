@@ -14,21 +14,15 @@ type singUpRequestData = {
 }
 
 export const singInRequest = async ({ email, password }: singInRequestData) => {
-    console.log('abc')
-    const res = await instance.post('/auth/sing-in', {
-        email,
-        password,
-    })
-    console.log('res', res);
-
-    return {
-        token: uuid(),
-        refreshToken: uuid(),
-        user: {
-            name: 'John Doe',
-            email: 'aa@gmai.com',
-            phone: '123456789'
-        }
+    try {
+        const { data } = await instance.post('/auth/sign-in', {
+            email,
+            password,
+        })
+        return data
+    } catch (e) {
+        console.error(e)
+        return e
     }
 }
 
@@ -39,7 +33,7 @@ type singUpResponse = {
 
 export const singUpRequest = async ({ email, password, name, phone }: singUpRequestData) => {
     try {
-        return await instance.post('/auth/sing-up', {
+        return await instance.post('/auth/sign-up', {
             email,
             password,
             name,

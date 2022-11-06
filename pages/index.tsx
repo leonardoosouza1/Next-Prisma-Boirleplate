@@ -1,29 +1,63 @@
 import React from 'react'
-import prisma from '../src/lib/prisma'
+import { Box, Button, Flex, Input } from '../src/components/UI'
+import { useAuth } from '../src/hooks/useAuth'
 
-import { GetServerSideProps } from 'next'
-import Layout from '../components/Layout'
-import Post, { PostProps } from '../components/Post'
+const Blog: React.FC = (props) => {
+  const { signIn, token, isAuthenticated } = useAuth()
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    await signIn({
+      email: e.target.email.value,
+      password: e.target.password.value,
+    })
 
-// export const getStaticProps: GetServerSideProps = async () => {
-//   const feed = await prisma.post.findMany({
-//     where: { published: true },
-//     include: {
-//       author: {
-//         select: { name: true }
-//       }
-//     }
-//   })
-//   return { props: { feed } }
-// }
+  }
 
-type Props = {
-  feed: PostProps[]
-}
+  const styleInputProps = {
+    width: '200px',
+    height: '40px',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    padding: '0 10px',
+    marginBottom: '10px',
+  }
+  const styleButtonProps = {
+    width: '200px',
+    height: '40px',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    padding: '0 10px',
+    marginBottom: '10px',
+  }
 
-const Blog: React.FC<Props> = (props) => {
   return (
-    <div>adas</div>
+    <Flex as='form'
+      onSubmit={handleLogin}
+      display='flex'
+      flexDirection='column'
+      alignItems='center'
+      justifyContent='center'
+    >
+      <Input
+        {...styleInputProps}
+        name='email'
+        type='email'
+        placeholder='Email'
+        mb={4}
+      />
+      <Input
+        {...styleInputProps}
+        name='password'
+        type='password'
+        placeholder='Password'
+        mb={4}
+      />
+      <Button
+        {...styleButtonProps}
+        type='submit'>
+        Press
+      </Button>
+    </Flex>
   )
 }
 
