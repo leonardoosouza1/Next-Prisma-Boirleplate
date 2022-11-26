@@ -11,7 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             where: {
                 email,
             },
-        })
+        }) || {};
 
         if (!userPassowrd) {
             return res.status(400).json({ error: 'User not found' })

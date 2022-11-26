@@ -1,15 +1,7 @@
 import { createContext, useEffect, useState } from 'react'
 import { setCookie, parseCookies } from 'nookies'
 
-import { singInRequest, singUpRequest, recoverUserRequest, refreshTokenRequest } from '../../services/auth'
-
-type TUser = {
-    name?: string
-    email?: string
-    phone?: string
-    token: string
-    refreshToken: string
-}
+import { signInRequest, signUpRequest, recoverUserRequest, refreshTokenRequest } from '../../services/auth'
 
 type SignUpType = {
     email: string
@@ -37,12 +29,15 @@ export const AuthContext = createContext({} as AuthContextType)
 const initialState = {
     token: null,
     refreshToken: null,
+    name: null,
+    email: null,
+    phone: null,
+    document: null,
 }
 
 export const AuthProvider: React.FC = ({ children }) => {
-    const [Authdata, setAuthData] = useState(initialState as TUser)
+    const [Authdata, setAuthData] = useState<TUser>(initialState)
     const isAuthenticated = !!Authdata?.token as boolean
-    console.log(Authdata);
 
     useEffect(() => {
         (async () => {
@@ -50,7 +45,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
             if (token && refreshToken) {
                 try {
-                    const data = await recoverUserRequest({ token })
+                    const data = await recoverUserRequest({ token }) as TUser
                     setAuthData({
                         ...data,
                         token,
@@ -64,31 +59,34 @@ export const AuthProvider: React.FC = ({ children }) => {
         })()
     }, [])
 
-    const signUp = async ({ email, password, name, phone }: SignUpType) => {
+    const signUp = async ({ email, password, name, phone, document }: SignUpType) => {
         try {
-            const data = await singUpRequest({ email, password, name, phone })
-            setAuthData(data)
-            setCookie(undefined, 'token', data.token, {
+            const { token, refreshToken } = await signUpRequest({ email, password, name, phone, document }) as signUpResponse
+            setAuthData({
+                email,
+                name,
+                phone,
+                document,
+                token,
+                refreshToken
+            })
+            setCookie(undefined, 'token', token as string, {
                 maxAge: 60 * 60 * 1, // 1 hour
             })
-            setCookie(undefined, 'refreshToken', data.refreshToken, {
+            setCookie(undefined, 'refreshToken', refreshToken as string, {
                 maxAge: 60 * 60 * 24 * 30, // 30 days
             })
-            console.log('data', data);
         } catch (e) {
             console.error(e)
-            console.log(e)
         }
     }
 
     const signIn = async ({ email, password }: SignInType) => {
         try {
-            const { token, refreshToken, user } = await singInRequest({
+            const { token, refreshToken, user } = await signInRequest({
                 email,
                 password
             })
-            console.log(token, refreshToken,);
-
             setAuthData({
                 ...user,
                 token,
@@ -122,9 +120,10 @@ export const AuthProvider: React.FC = ({ children }) => {
     const handleRefreshToken = async () => {
         try {
             const { refreshToken: refreshTokenCookie } = parseCookies()
-            const { token, refreshToken } = await refreshTokenRequest({ refreshToken: refreshTokenCookie })
+            const { token, refreshToken } =
+                await refreshTokenRequest({ refreshToken: refreshTokenCookie }) as TUser
             if (!!token && !!refreshToken) {
-                const data = await recoverUserRequest({ token })
+                const data = await recoverUserRequest({ token }) as TUser
                 setAuthData({
                     ...data,
                     token,

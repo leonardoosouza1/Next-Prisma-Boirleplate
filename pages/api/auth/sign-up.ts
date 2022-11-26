@@ -39,7 +39,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 name,
             },
         })
-        console.log('email', email);
 
         const token = jwt.sign({ email }, process.env.JWT_SECRET, {
             subject: userId,

@@ -16,7 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     },
                 ],
             },
-        })
+        }) as { id: string }
         if (userId) {
             //TODO: send email or message with recovery code
             if ('code' === 'code') {
