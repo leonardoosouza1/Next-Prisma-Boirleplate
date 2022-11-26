@@ -10,10 +10,18 @@ type singUpRequestData = {
     email: string
     password: string
     name: string,
-    phone: string
+    phone: string,
+    document: string,
 }
 
-export const singInRequest = async ({ email, password }: singInRequestData) => {
+type singUpResponse = {
+    data: {
+        token: string
+        refreshToken: string
+    }
+}
+
+export const signInRequest = async ({ email, password }: singInRequestData) => {
     try {
         const { data } = await instance.post('/auth/sign-in', {
             email,
@@ -26,21 +34,17 @@ export const singInRequest = async ({ email, password }: singInRequestData) => {
     }
 }
 
-type singUpResponse = {
-    token: string
-    refreshToken: string
-}
-
-export const singUpRequest = async ({ email, password, name, phone }: singUpRequestData) => {
+export const signUpRequest = async ({ email, password, name, phone, document }: singUpRequestData) => {
     try {
-        return await instance.post('/auth/sign-up', {
+        const { data: { token, refreshToken } } = await instance.post('/auth/sign-up', {
             email,
             password,
             name,
-            phone
+            phone,
+            document,
         }) as singUpResponse
+        return { token, refreshToken }
     } catch (e) {
-        console.log(e)
         console.error(e)
         return null
     }
