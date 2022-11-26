@@ -14,7 +14,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET)
 
-        console.log('userId', userId);
         const user = await prisma.user.findUnique({
             where: {
                 id: userId,
