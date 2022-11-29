@@ -89,12 +89,12 @@ const buttonStyleProps = {
     border: '1px solid black',
     borderRadius: 5,
     p: 2,
-    shadow: '3px 3px 0px 3px rgba(0,0,0,0.75)',
+    shadow: '5px 5px 0px 3px rgba(0,0,0,0.75)',
     transition: 'all 0.3s ease-in-out',
     _hover: {
         bg: 'whiteTheme',
         color: 'purpleTheme',
         transform: 'translate(3px,3px)',
-        shadow: '3px 3px 0px 0px rgba(0,0,0,0.75)',
+        shadow: '3px 3px 0px 2px rgba(0,0,0,0.75)',
     }
 }

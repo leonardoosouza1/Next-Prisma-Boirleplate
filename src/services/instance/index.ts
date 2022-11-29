@@ -1,12 +1,10 @@
 import axios from 'axios'
 import { parseCookies } from 'nookies'
-import { refreshTokenRequest } from '../auth'
-
 
 const { token } = parseCookies()
 
 const instance = axios.create({
-    baseURL: 'http://local.development.com/api',
+    baseURL: 'http://localhost:3000/api',
     headers: {
         apllication: 'form-data',
     }
