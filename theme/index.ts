@@ -27,7 +27,8 @@ const customTheme = {
                 margin: 0,
                 padding: 0,
                 outline: 0,
-                boxSizing: "border-box"
+                boxSizing: "border-box",
+                transition: "all 0.3s ease-in-out",
             },
             "html, body, #__next": {
                 height: "100%",
