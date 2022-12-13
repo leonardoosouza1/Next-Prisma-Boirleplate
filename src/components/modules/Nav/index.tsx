@@ -12,8 +12,8 @@ export const Nav: React.FC = () => {
 
         },
         {
-            name: 'About',
-            path: '/about'
+            name: 'Module',
+            path: '/module'
         },
         {
             name: 'Contact',
