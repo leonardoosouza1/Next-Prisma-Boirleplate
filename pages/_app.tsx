@@ -8,7 +8,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <ChakraProvider theme={theme}>
       <AuthProvider>
-        <Nav />
+        {/*<Nav />*/}
         <Component {...pageProps} />
       </AuthProvider>
     </ChakraProvider>

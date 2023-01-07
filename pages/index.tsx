@@ -1,114 +1,90 @@
-import React from 'react';
-import { Box, Flex, } from '../src/components/UI'
-import home2 from '../src/assets/home-2.jpg'
-import home3 from '../src/assets/home-3.jpg'
-import home from '../src/assets/home.jpg'
+import {
+    Heading,
+    Avatar,
+    Box,
+    Center,
+    Image,
+    Flex,
+    Text,
+    Stack,
+    Button,
+    useColorModeValue,
+} from '@chakra-ui/react';
 
-const __css = {
-    '&:hover': {
-        transform: 'scale(0.9)',
-    }
-}
-const pages: React.FC = () => {
-
+export default function SocialProfileWithImage() {
     return (
-        <>
-            <Flex
-                w='100%'
-                h='100vh'
-                bg='grayTheme2'
-                color='whiteTheme'
-                as='section'
-                justifyContent='space-between'
-            >
-                <Flex w='40%' direction='column' p='20px'>
-                    <Box as='h1' fontSize='3rem' fontWeight='bold' > Lorem ipsum dolor</Box>
-                    <Box as='p' fontSize='1.5rem' >
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.
-                    </Box>
-                </Flex>
-                <Box
-                    width='50%'
-                    height='80%'
-                    objectFit='cover'
-                    borderRadius='10px'
-                    boxShadow='0 0 10px 0 rgba(0,0,0,0.5)'
-                    margin='20px'
-                    backgroundImage={`url(${home2.src})`}
-                    backgroundSize='cover'
-                    alt='gameplay screenshot'
-                    __css={__css}
+        <Center py={6}>
+            <Box
+                maxW={'550px'}
+                w={'full'}
+                bg={useColorModeValue('white', 'gray.800')}
+                boxShadow={'2xl'}
+                rounded={'md'}
+                overflow={'hidden'}>
+                <Image
+                    h={'120px'}
+                    w={'full'}
+                    src={
+                        'https://images.unsplash.com/photo-1612865547334-09cb8cb455da?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
+                    }
+                    objectFit={'cover'}
                 />
-            </Flex>
-            <Flex
-                w='100%'
-                h='100vh'
-                bg='grayTheme2'
-                color='whiteTheme'
-                as='section'
-                direction='column'
-                alignItems='center'
-                justifyContent='center'
-            >
-                <Flex direction='column' p='20px' justifyContent='center' alignItems='center'>
-                    <Box as='h1' fontSize='3rem' fontWeight='bold' > Lorem ipsum dolor</Box>
-                    <Box as='p' mb='16px' fontSize='1.5rem' textAlign='center' >
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.
-                    </Box>
+                <Flex justify={'center'} mt={-12}>
+                    <Avatar
+                        size='xl'
+                        src={
+                            'https://avatars.githubusercontent.com/u/71739468?v=4'
+                        }
+                        css={{
+                            border: '2px solid white',
+                        }}
+                    />
                 </Flex>
-                <Box
-                    as='img'
-                    width='80%'
-                    height='60%'
-                    objectFit='cover'
-                    borderRadius='10px'
-                    boxShadow='0 0 10px 0 rgba(0,0,0,0.5)'
-                    backgroundImage={`url(${home3.src})`}
-                    backgroundSize='cover'
-                    __css={__css}
-                />
-            </Flex>
-            <Flex
-                w='100%'
-                h='100vh'
-                bg='grayTheme2'
-                color='whiteTheme'
-                as='section'
-                direction='column'
-                alignItems='center'
-                justifyContent='center'
-                zIndex={-1}
-                position='relative'
-            >
-                <img
-                    style={{
-                        width: '90%',
-                        height: '80%',
-                        objectFit: 'cover',
-                        borderRadius: '10px',
-                        boxShadow: '0 0 10px 0 rgba(0,0,0,0.5)',
-                        position: 'absolute',
-                        zIndex: -1,
-                    }}
-                    src={home.src}
-                    alt='gameplay screenshot'
-                />
-                <Flex bg='rgba(0,0,0,0.7)' direction='column' w='80%' p='44px' borderRadius='12px' justifyContent='left' alignItems='left'>
-                    <Box as='h1' fontSize='3rem' fontWeight='bold' > Lorem ipsum dolor</Box>
-                    <Box as='p' fontSize='1.5rem' textAlign='left' >
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.
-                    </Box>
-                </Flex>
+                <Stack spacing={0} align={'center'} mb={5}>
+                    <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
+                        Leonardo Souza
+                    </Heading>
+                    <Text color={'gray.500'}>Full Cycle Developer</Text>
+                </Stack>
+                <Flex
+                    p={6}
+                    alignItems={'flex-start'}
+                    justifyContent={'space-evenly'}
+                >
+                    <Stack direction={'row'} justify={'flex-start'} spacing={6}>
+                        <Stack spacing={0} align={'flex-start'}>
+                            <Text fontWeight={600}>Most used frameworks</Text>
+                            {['React Native', 'React', 'Next'].map((item, index) => (
+                                <Text key={index} fontSize={'sm'} color={'gray.500'}>
+                                    {item}
+                                </Text>
+                            ))}
 
-            </Flex>
-        </>
-    )
+                        </Stack>
+                    </Stack>
+                    <Stack direction={'row'} justify={'flex-start'} spacing={6}>
+                        <Stack spacing={0} align={'flex-start'}>
+                            <Text fontWeight={600}>Main languages</Text>
+                            {['Typescript', 'Javascript'].map((item, index) => (
+                                <Text key={index} fontSize={'sm'} color={'gray.500'}>
+                                    {item}
+                                </Text>
+                            ))}
+
+                        </Stack>
+                    </Stack>
+                    <Stack direction={'row'} justify={'flex-start'} spacing={6}>
+                        <Stack spacing={0} align={'flex-start'}>
+                            <Text fontWeight={600}>Others</Text>
+                            {['Docker', 'Nginx', 'pm2'].map((item, index) => (
+                                <Text key={index} fontSize={'sm'} color={'gray.500'}>
+                                    {item}
+                                </Text>
+                            ))}
+                        </Stack>
+                    </Stack>
+                </Flex>
+            </Box>
+        </Center>
+    );
 }
-
-export default pages;
