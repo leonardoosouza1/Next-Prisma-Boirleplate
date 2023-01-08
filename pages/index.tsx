@@ -9,11 +9,14 @@ import {
     Stack,
     Button,
     useColorModeValue,
+    VStack,
+    HStack,
+    Grid,
 } from '@chakra-ui/react';
 
 export default function SocialProfileWithImage() {
     return (
-        <Center py={6}>
+        <VStack spacing='32px' py={6}>
             <Box
                 maxW={'550px'}
                 w={'full'}
@@ -51,40 +54,61 @@ export default function SocialProfileWithImage() {
                     alignItems={'flex-start'}
                     justifyContent={'space-evenly'}
                 >
-                    <Stack direction={'row'} justify={'flex-start'} spacing={6}>
-                        <Stack spacing={0} align={'flex-start'}>
-                            <Text fontWeight={600}>Most used frameworks</Text>
-                            {['React Native', 'React', 'Next'].map((item, index) => (
-                                <Text key={index} fontSize={'sm'} color={'gray.500'}>
-                                    {item}
-                                </Text>
-                            ))}
-
-                        </Stack>
-                    </Stack>
-                    <Stack direction={'row'} justify={'flex-start'} spacing={6}>
-                        <Stack spacing={0} align={'flex-start'}>
-                            <Text fontWeight={600}>Main languages</Text>
-                            {['Typescript', 'Javascript'].map((item, index) => (
-                                <Text key={index} fontSize={'sm'} color={'gray.500'}>
-                                    {item}
-                                </Text>
-                            ))}
-
-                        </Stack>
-                    </Stack>
-                    <Stack direction={'row'} justify={'flex-start'} spacing={6}>
-                        <Stack spacing={0} align={'flex-start'}>
-                            <Text fontWeight={600}>Others</Text>
-                            {['Docker', 'Nginx', 'pm2'].map((item, index) => (
-                                <Text key={index} fontSize={'sm'} color={'gray.500'}>
-                                    {item}
-                                </Text>
-                            ))}
-                        </Stack>
-                    </Stack>
+                    <VStack px={8} spacing={2}>
+                        <Text fontWeight={600}>About me</Text>
+                        <Text textAlign='center' color={'gray.500'}>I've been a professional developer since 2020  </Text>
+                    </VStack>
                 </Flex>
             </Box>
-        </Center>
+            <VStack
+                maxW={'1024px'}
+                w={'full'}
+                bg={useColorModeValue('white', 'gray.800')}
+                boxShadow={'2xl'}
+                overflow={'hidden'}
+            >
+                <Image
+                    h={'420px'}
+                    w={'full'}
+                    src={
+                        'https://mentorama.com.br/blog/wp-content/uploads/2021/12/Arte-capa.png'
+                    }
+                    objectFit='contain'
+                />
+                <Stack
+                    spacing={0}
+                    align={'center'}
+                >
+                    <Heading
+                        fontSize={'2xl'}
+                        fontWeight={500}
+                        mb='36px'
+                    >
+                        Front-end technologies
+                    </Heading>
+                </Stack>
+                <Grid
+                    p={8}
+                    mb={8}
+                    w='full'
+                    borderTop='1px solid rgba(0,0,0,0.2)'
+                    borderBottom='1px solid rgba(0,0,0,0.2)'
+                    templateColumns='repeat(3, 1fr)'
+                >
+                    <VStack px={8} spacing={2}>
+                        <Text fontWeight={600}>React</Text>
+                        <Text textAlign='center' color={'gray.500'}>These are my favorite frameworks for working with interfaces and components.</Text>
+                    </VStack>
+                    <VStack px={8} spacing={2}>
+                        <Text fontWeight={600}>Component libraries</Text>
+                        <Text textAlign='center' color={'gray.500'}>I like to use Chakra-ui for web and Native-base for mobile.</Text>
+                    </VStack>
+                    <VStack px={8} spacing={2}>
+                        <Text fontWeight={600}>Testing Application</Text>
+                        <Text textAlign='center' color={'gray.500'}>I use Jest and React Testing Libary</Text>
+                    </VStack>
+                </Grid>
+            </VStack>
+        </VStack >
     );
 }
