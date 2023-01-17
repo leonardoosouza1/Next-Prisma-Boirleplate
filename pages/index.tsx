@@ -47,7 +47,7 @@ export default function SocialProfileWithImage() {
                     <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
                         Leonardo Souza
                     </Heading>
-                    <Text color={'gray.500'}>Full Cycle Developer</Text>
+                    <Text color={'gray.500'}>Full Stack Developer</Text>
                 </Stack>
                 <Flex
                     p={6}

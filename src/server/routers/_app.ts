@@ -9,10 +9,10 @@ export const appRouter = router({
       }),
     )
     .query(async ({ input, ctx }) => {
-      const count = await ctx.prisma.feedback.count()
+      //const count = await ctx.prisma.feedback.count()
 
       return {
-        message: `Feedbacks: ${count}`,
+        message: `Feedbacks: 0`,
       };
     }),
 
@@ -24,12 +24,14 @@ export const appRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
+      {/*
       await ctx.prisma.feedback.create({
         data: {
           type: input.type,
           content: input.content,
         }
       })
+    */}
     })
 });
 
